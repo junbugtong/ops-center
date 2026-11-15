@@ -1,0 +1,47 @@
+spring:
+  application:
+    name: opscenter
+  datasource:
+    # Defaults match compose.yaml for local development only.
+    # Every other environment must supply these through the environment.
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/opscenter}
+    username: ${DB_USERNAME:opscenter}
+    password: ${DB_PASSWORD:opscenter}
+  jpa:
+    open-in-view: false
+    hibernate:
+      # Flyway owns the schema. Hibernate only checks that it matches.
+      ddl-auto: validate
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+  flyway:
+    enabled: true
+
+server:
+  shutdown: graceful
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      group:
+        # Liveness: is the process alive? It must not depend on the database.
+        liveness:
+          include: livenessState
+        # Readiness: can it serve traffic? That needs the database.
+        readiness:
+          include: readinessState,db
+
+logging:
+  structured:
+    format:
+      # JSON logs, with MDC values such as correlationId included.
+      # For plain text while developing, run with: --logging.structured.format.console=
+      console: logstash
