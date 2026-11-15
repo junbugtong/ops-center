@@ -1,5 +1,5 @@
 # ---- build ----
-FROM eclipse-temurin:21-jdk AS build
+FROM eclipse-temurin:25-jdk AS build
 WORKDIR /workspace
 
 # Resolve dependencies first so this layer is cached until pom.xml changes.
@@ -13,7 +13,7 @@ RUN ./mvnw -B -q package -DskipTests \
  && java -Djarmode=tools -jar target/*.jar extract --layers --destination extracted
 
 # ---- runtime ----
-FROM eclipse-temurin:21-jre
+FROM eclipse-temurin:25-jre
 RUN groupadd --system app && useradd --system --gid app --no-create-home app
 WORKDIR /app
 

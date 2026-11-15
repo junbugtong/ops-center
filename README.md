@@ -8,7 +8,7 @@ Status: Phase 1 (foundation) in progress. See [docs/NEXT_ACTION.md](docs/NEXT_AC
 
 ## Prerequisites
 
-- JDK 21
+- JDK 25
 - Docker Engine with Compose (or a compatible runtime such as Podman or Rancher Desktop)
 
 Maven is not required; the wrapper (`mvnw`) downloads it.
