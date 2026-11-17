@@ -98,6 +98,29 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<!-- Code formatting. Fix: ./mvnw spotless:apply  Check (runs in verify): ./mvnw spotless:check -->
+			<plugin>
+				<groupId>com.diffplug.spotless</groupId>
+				<artifactId>spotless-maven-plugin</artifactId>
+				<version>3.11.0</version>
+				<configuration>
+					<java>
+						<palantirJavaFormat>
+							<version>2.103.0</version>
+						</palantirJavaFormat>
+						<removeUnusedImports/>
+						<trimTrailingWhitespace/>
+						<endWithNewline/>
+					</java>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 

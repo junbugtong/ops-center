@@ -8,8 +8,9 @@ import org.springframework.boot.SpringApplication;
  */
 public class TestOpsCenterApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.from(OpsCenterApplication::main).with(TestcontainersConfiguration.class).run(args);
-	}
-
+    public static void main(String[] args) {
+        SpringApplication.from(OpsCenterApplication::main)
+                .with(TestcontainersConfiguration.class)
+                .run(args);
+    }
 }

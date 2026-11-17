@@ -42,6 +42,19 @@ docker compose --profile app up --build
 Integration tests start their own PostgreSQL through Testcontainers, so Docker
 must be running but Compose does not need to be up.
 
+## Format
+
+Code is formatted with [Palantir Java Format](https://github.com/palantir/palantir-java-format)
+through the Spotless Maven plugin. `./mvnw verify` (and therefore CI) fails if
+any Java file is not formatted. To fix all files:
+
+```bash
+./mvnw spotless:apply
+```
+
+In IntelliJ IDEA, install the **palantir-java-format** plugin and enable it so
+Reformat Code produces the same result.
+
 ## Reset
 
 Deletes the local database volume:
