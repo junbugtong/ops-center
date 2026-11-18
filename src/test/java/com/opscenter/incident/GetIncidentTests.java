@@ -2,6 +2,7 @@ package com.opscenter.incident;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -58,12 +59,21 @@ class GetIncidentTests {
     void getIncidentShouldReturnNotFoundWhenRecordIsNotExistingTest() throws Exception {
         UUID unknownId = UUID.randomUUID();
 
-        mockMvc.perform(get("/incidents/{id}", unknownId)).andExpect(status().isNotFound());
+        mockMvc.perform(get("/incidents/{id}", unknownId))
+                .andExpect(status().isNotFound())
+                .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON))
+                .andExpect(jsonPath("$.status").value(404))
+                .andExpect(jsonPath("$.title").value("Incident not found"))
+                .andExpect(jsonPath("$.detail").value("Incident %s was not found".formatted(unknownId)))
+                .andExpect(jsonPath("$.incidentId").value(unknownId.toString()))
+                .andExpect(jsonPath("$.instance").value("/incidents/" + unknownId));
     }
 
     @Test
     void getIncidentShouldReturnBadRequestForInvalidUuidTest() throws Exception {
-
-        mockMvc.perform(get("/incidents/abc")).andExpect(status().isBadRequest());
+        mockMvc.perform(get("/incidents/abc"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON))
+                .andExpect(jsonPath("$.status").value(400));
     }
 }
