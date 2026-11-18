@@ -1,9 +1,11 @@
 package com.opscenter.incident.service;
 
 import com.opscenter.incident.Incident;
+import com.opscenter.incident.exception.IncidentNotFoundException;
 import com.opscenter.incident.repository.IncidentRepository;
 import java.time.Clock;
 import java.time.Instant;
+import java.util.UUID;
 import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +28,11 @@ public class IncidentService {
         Instant now = clock.instant();
 
         return incidentRepository.save(Incident.create(ticketNumber, title, description, now));
+    }
+
+    @Transactional(readOnly = true)
+    public Incident getIncident(UUID id) {
+        return incidentRepository.findById(id).orElseThrow(() -> new IncidentNotFoundException(id));
     }
 
     private @NonNull String getFormattedTicketNumber() {

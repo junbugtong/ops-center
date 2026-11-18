@@ -25,7 +25,7 @@ class CreateIncidentTests {
     private MockMvc mockMvc;
 
     @Test
-    void createsIncidentWithTicketNumber() throws Exception {
+    void createsIncidentWithTicketNumberTest() throws Exception {
         String body = """
                 {
                   "title": "Payments API returning 500s",
